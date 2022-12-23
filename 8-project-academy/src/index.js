@@ -2,6 +2,7 @@ import $ from 'jquery';
 import _ from 'lodash';
 import Typed from 'typed.js';
 import validate from 'validate.js';
+
 import toastr from 'toastr';
 
 import './index.css';
@@ -55,3 +56,12 @@ const footerCol3 = $('#footer-column-3')[0];
 buildFooterItems(footerCol1, footerCol1Items);
 buildFooterItems(footerCol2, footerCol2Items);
 buildFooterItems(footerCol3, footerCol3Items);
+
+// pricing modal
+$('#pricing-plan').on('click', function () {
+  import(/* webpackChunkName: "modal"*/ './components/modal').then((module) => {
+    const showModal = module.default;
+    showModal();
+    $('#myModal').css('display', 'block');
+  });
+});

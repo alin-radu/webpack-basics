@@ -1,6 +1,7 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 
 // individual loaders
 const _styleLoader = {
@@ -59,6 +60,8 @@ const copyPluginInstance = new CopyPlugin({
   ],
 });
 
+const bundleAnalyzerPluginInstance = new BundleAnalyzerPlugin({});
+
 module.exports = {
   mode: 'development',
   entry: {
@@ -66,7 +69,7 @@ module.exports = {
     courses: './src/pages/courses.js',
   },
   output: {
-    filename: '[name].bundle.js',
+    filename: '[name].[contenthash].js',
     path: path.resolve(__dirname, 'dist'),
     clean: true,
   },
@@ -76,5 +79,15 @@ module.exports = {
   module: {
     rules: [_cssLoaders, _scssLoaders, _imageLoaders, _fontLoaders],
   },
-  plugins: [htmlWebpackPluginIndex, htmlWebpackPluginCourses, copyPluginInstance],
+  plugins: [
+    htmlWebpackPluginIndex,
+    htmlWebpackPluginCourses,
+    copyPluginInstance,
+    bundleAnalyzerPluginInstance,
+  ],
+  optimization: {
+    splitChunks: {
+      chunks: 'all',
+    },
+  },
 };
