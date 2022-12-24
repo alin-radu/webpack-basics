@@ -2,19 +2,21 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
-// individual loaders
-const _styleLoader = {
-  loader: 'style-loader',
-};
-
+// loaders
 const _cssLoader = {
   loader: 'css-loader',
 };
 
-const _scssLoader = {
+const _sassLoader = {
   loader: 'sass-loader',
 };
+
+// const _styleLoader = {
+//   loader: 'style-loader',
+// };
+const _styleLoader = MiniCssExtractPlugin.loader;
 
 // loaders
 const _cssLoaders = {
@@ -22,9 +24,9 @@ const _cssLoaders = {
   use: [_styleLoader, _cssLoader],
 };
 
-const _scssLoaders = {
+const _sassLoaders = {
   test: /.s[ac]ss$/i,
-  use: [_styleLoader, _cssLoader, _scssLoader],
+  use: [_styleLoader, _cssLoader, _sassLoader],
 };
 
 const _imageLoaders = {
@@ -37,7 +39,7 @@ const _fontLoaders = {
   type: 'asset/resource',
 };
 
-// htmlPlugin
+// plugins
 const htmlWebpackPluginIndex = new HtmlWebpackPlugin({
   template: './src/index.html',
   chunks: ['index'],
@@ -62,6 +64,8 @@ const copyPluginInstance = new CopyPlugin({
 
 const bundleAnalyzerPluginInstance = new BundleAnalyzerPlugin({});
 
+const miniCssExtractPluginInstance = new MiniCssExtractPlugin({});
+
 module.exports = {
   mode: 'development',
   entry: {
@@ -77,13 +81,14 @@ module.exports = {
     static: './dist',
   },
   module: {
-    rules: [_cssLoaders, _scssLoaders, _imageLoaders, _fontLoaders],
+    rules: [_cssLoaders, _sassLoaders, _imageLoaders, _fontLoaders],
   },
   plugins: [
     htmlWebpackPluginIndex,
     htmlWebpackPluginCourses,
     copyPluginInstance,
     bundleAnalyzerPluginInstance,
+    miniCssExtractPluginInstance,
   ],
   optimization: {
     splitChunks: {
