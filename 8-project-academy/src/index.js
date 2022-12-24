@@ -1,5 +1,6 @@
 import $ from 'jquery';
 import _ from 'lodash';
+
 import Typed from 'typed.js';
 import validate from 'validate.js';
 
